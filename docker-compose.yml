@@ -1,0 +1,31 @@
+version: '3'
+services:
+  react-app:
+    image: react-app
+    stdin_open: true
+    ports:
+      - '3000:3000'
+    networks:
+      - pixsy-signup-app
+  pixsy-server:
+    image: pixsy-server
+    ports:
+      - '5000:5000'
+    networks:
+      - pixsy-signup-app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6.22-xenial
+    ports:
+      - '27017:27017'
+    networks:
+      - pixsy-signup-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  pixsy-signup-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
