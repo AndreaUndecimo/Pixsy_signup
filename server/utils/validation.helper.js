@@ -1,10 +1,10 @@
-const Joi = require('@hapi/joi')
+const Joi = require('joi');
 
 const userValidation = (user) => {
   const schema = Joi.object({
     email: Joi.string().min(6).required().email(),
-  })
-  return schema.validate(user)
-}
+  });
+  return schema.validate(user);
+};
 
-module.exports = { userValidation }
+module.exports = { userValidation };
