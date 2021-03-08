@@ -1,10 +1,33 @@
-import React from 'react'
-import './Login.css'
+import React, { useState, useContext } from 'react';
+import { StateContext } from '../../globals/globalStore.reducer';
+import './Login.css';
 
-import login_img from '../../assets/login_img.png'
-import logo from '../../assets/pixsy_logo.png'
+import login_img from '../../assets/login_img.png';
+import logo from '../../assets/pixsy_logo.png';
+import { registerUser } from '../../ApiServices/ApiClientRegister';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const { dispatch } = useContext(StateContext);
+
+  const saveEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      registerUser({ email }).then((res) => console.log(res.body));
+
+      dispatch({ type: 'isAuth', payload: true });
+    } catch (error) {
+      error.response?.data
+        ? setError(error.response.data)
+        : console.error(error);
+    }
+  };
+
   return (
     <div className='login_wrapper'>
       <div className='image'>
@@ -20,22 +43,24 @@ const Login = () => {
             Enter your email and we'll get right into searching for illegal
             usage of your images.
           </h3>
-          <input
-            type='email'
-            className='email_input'
-            placeholder='Enter your email'
-          />
-          <button type='submit' className='account_btn'>
-            Create account
-          </button>
+          <form onSubmit={handleSubmit}>
+            <input
+              type='email'
+              className='email_input'
+              placeholder='Enter your email'
+              onChange={saveEmail}
+            />
+            <button type='submit' className='account_btn'>
+              Create account
+            </button>
+          </form>
           <p>
             Already have an account? <a href='/'>Login</a>
           </p>
         </div>
-        <form></form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
