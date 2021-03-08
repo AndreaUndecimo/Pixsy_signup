@@ -16,6 +16,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build ./client --file Dockerfile --tag react-app:$(date +%s) 
-        docker build ./server --file Dockerfile --tag pixsy-server:$(date +%s)
+        docker build -t "react-app" ./client/
+        docker build -t pixsy-server ./server/
         docker-compose up
