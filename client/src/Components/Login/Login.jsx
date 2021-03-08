@@ -6,8 +6,10 @@ import login_img from '../../assets/login_img.png';
 import logo from '../../assets/pixsy_logo.png';
 import {
   completeAuthentication,
+  getProfile,
   registerUser,
 } from '../../ApiServices/ApiClientRegister';
+import { navigate } from '@reach/router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,11 +23,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser({ email }).then((res) =>
-        completeAuthentication(res.data)
-      );
+      await registerUser({ email }).then((res) => {
+        completeAuthentication(res.data);
+        getProfile(res.data)
+          .then((res) => dispatch({ type: 'user', payload: res.data }))
+          .catch((error) => setError(error));
+      });
       dispatch({ type: 'isAuth', payload: true });
+      navigate('/confirmation');
     } catch (error) {
+      document.querySelector('.errorMessage').classList.add('toggle_error');
       error.response?.data
         ? setError(error.response.data)
         : console.error(error);
@@ -62,6 +69,9 @@ const Login = () => {
             Already have an account? <a href='/'>Login</a>
           </p>
         </div>
+      </div>
+      <div className='errorMessage'>
+        <p>{error}</p>
       </div>
     </div>
   );
