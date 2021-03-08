@@ -1,23 +1,23 @@
 import React, { useContext } from 'react';
+import './Modal.css';
 import { StateContext } from '../../globals/globalStore.reducer';
 import { handleLogout } from '../../ApiServices/ApiClientRegister';
 import moment from 'moment';
 import { Link } from '@reach/router';
+import { ReactComponent as Close } from '../../assets/close-24px.svg';
 
 const Modal = () => {
   const { state } = useContext(StateContext);
   const closeModal = (e) => {
-    if (
-      e.target.classList.contains('modal') ||
-      e.target.classList.contains('toggle_modal')
-    ) {
-      document.querySelector('.modal').classList.remove('show');
-    }
+    document.querySelector('.modal').classList.remove('toggle_modal');
   };
   return (
     <div onClick={closeModal} className='modal'>
       <div className='info_box'>
         <div className='info_title'>
+          <button onClick={closeModal}>
+            <Close />
+          </button>
           <h1>
             Not receiving <br /> any emails from us?
           </h1>

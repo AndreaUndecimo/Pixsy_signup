@@ -71,7 +71,9 @@ const Login = () => {
         </div>
       </div>
       <div className='errorMessage'>
-        <p>{error}</p>
+        <p>
+          {typeof error === 'string' ? error : `Uh oh, something went wrong`}
+        </p>
       </div>
     </div>
   );
