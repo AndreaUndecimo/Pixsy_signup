@@ -9,7 +9,7 @@ RUN yarn install
 
 COPY . .
 
-ENV REACT_APP_BASE_URL=http://localhost:5000/
+ENV REACT_APP_BASE_URL=http://localhost:5000
 
 EXPOSE 3000
 
