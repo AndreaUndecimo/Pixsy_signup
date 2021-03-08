@@ -4,7 +4,10 @@ import './Login.css';
 
 import login_img from '../../assets/login_img.png';
 import logo from '../../assets/pixsy_logo.png';
-import { registerUser } from '../../ApiServices/ApiClientRegister';
+import {
+  completeAuthentication,
+  registerUser,
+} from '../../ApiServices/ApiClientRegister';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,8 +21,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      registerUser({ email }).then((res) => console.log(res.body));
-
+      await registerUser({ email }).then((res) =>
+        completeAuthentication(res.data)
+      );
       dispatch({ type: 'isAuth', payload: true });
     } catch (error) {
       error.response?.data
