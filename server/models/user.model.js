@@ -1,4 +1,4 @@
-const { mongoose } = require('./')
+const { mongoose } = require('./');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -7,8 +7,12 @@ const userSchema = new mongoose.Schema({
     min: 6,
     max: 255,
   },
-})
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+});
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 
-module.exports = { User }
+module.exports = { User };
