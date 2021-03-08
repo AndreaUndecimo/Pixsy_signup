@@ -9,8 +9,7 @@ async function authorizeUser(req, res, next) {
   const authHeaders = req.headers['authorization']
 
   if (!authHeaders) {
-    ctx.status = 403 //access denied
-    return (ctx.body = 'Access Denied')
+    res.status(403).send('Access Denied') //access denied
   }
 
   try {
@@ -19,12 +18,11 @@ async function authorizeUser(req, res, next) {
     // and try to find the user
     const user = await User.findOne({ _id })
 
-    ctx.user = user
-    ctx.body = ctx.request.body
+    res.user = user
+    res.send(res.body)
     next()
   } catch (error) {
-    ctx.status = 401
-    return (ctx.body = 'Invalid Token')
+    res.status(401).send('Invalid Token')
   }
 }
 
