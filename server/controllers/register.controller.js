@@ -8,11 +8,11 @@ async function registerUser(req, res) {
   const { email } = req.body;
 
   const { error } = userValidation({ email });
-  error && res.status(400).send(error.details[0].message);
+  error && res.sendStatus(400);
 
   // Check if user is already in db
   const emailExists = await User.findOne({ email });
-  emailExists && res.status(400).send('Email already exists');
+  if (emailExists) res.status(400).send('Email already exists');
 
   const user = new User({ email });
   var transport = nodemailer.createTransport({
@@ -41,9 +41,8 @@ async function registerUser(req, res) {
   });
 
   try {
-    const { _id } = await user.save();
+    const { _id } = await User.create({ email });
     const accessToken = jwt.sign({ _id }, process.env.TOKEN_SECRET);
-
     res.status(200).send(accessToken);
   } catch (error) {
     res.status(400).send(error);
@@ -100,7 +99,6 @@ async function editEmail(req, res) {
       { email: oldEmail },
       { email: newEmail }
     );
-    console.log('userToModify', userToModify);
 
     res.status(200).send(userToModify);
   } catch (error) {
